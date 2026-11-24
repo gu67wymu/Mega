@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEGA Linkfinder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#101217);--ink:light-dark(#14161c,#eceef3);--mute:light-dark(#5d6270,#9aa0ad);--line:light-dark(#e3e5ea,#262a33);--card:light-dark(#f5f6f8,#181b22);--red:#e5322d;--link:light-dark(#c4221d,#ff7a74);--url:light-dark(#2f7a3d,#7fd18c)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:clamp(24px,4vw,56px) max(5vw,16px) 48px}
+h1{font:700 clamp(30px,5vw,46px)/1.05 "Space Grotesk",Inter,sans-serif;margin:0 0 8px}
+h1 span{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--red);margin-right:.25em;vertical-align:.04em}
+.lead{color:var(--mute);margin:0 0 24px}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:6px 6px 6px 14px}
+.search:focus-within{border-color:var(--red)}
+.search input{flex:1;font:500 20px/1.3 Inter,sans-serif;border:0;background:none;color:var(--ink);padding:10px 0;outline:none}
+.spin{width:20px;height:20px;border:3px solid var(--line);border-top-color:var(--red);border-radius:50%;animation:r .8s linear infinite;visibility:hidden;margin-right:10px}
+.busy .spin{visibility:visible}
+@keyframes r{to{transform:rotate(360deg)}}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font:500 15px Inter,sans-serif;min-height:42px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--link);outline-offset:2px}
+.status{margin:22px 0 4px;color:var(--mute);font-size:14px;min-height:20px}
+.setup{background:var(--card);border:1.5px dashed var(--line);border-radius:14px;padding:18px;margin-top:20px}
+.setup h2{font:600 18px Inter,sans-serif;margin:0 0 8px}
+.setup ol{margin:0 0 14px;padding-left:20px}.setup li{margin:4px 0}
+.setup a{color:var(--link)}
+.setup form{display:flex;flex-wrap:wrap;gap:8px}
+.setup input{flex:1 1 240px;font:16px Inter,sans-serif;min-height:46px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.btn{font:600 16px Inter,sans-serif;border:0;border-radius:10px;padding:0 18px;min-height:46px;background:var(--red);color:#fff;cursor:pointer}
+.foot{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;color:var(--mute);font-size:13px}
+.foot button{font:13px Inter,sans-serif;background:none;border:0;color:var(--link);cursor:pointer;padding:0;text-decoration:underline}
+/* Google-Ergebnisse an das Design anpassen */
+#res .gsc-control-cse,#res .gsc-results-wrapper-nooverlay{background:transparent!important;border:0!important;padding:0!important;font-family:Inter,sans-serif!important}
+#res .gsc-webResult.gsc-result,#res .gsc-results .gsc-imageResult{background:transparent!important;border:0!important;border-bottom:1px solid var(--line)!important;padding:14px 0!important}
+#res .gs-title,#res .gs-title *{color:var(--link)!important;font:600 17px/1.35 Inter,sans-serif!important;text-decoration:none!important}
+#res .gs-visibleUrl,#res .gs-visibleUrl-breadcrumb,#res .gs-visibleUrl-short{color:var(--url)!important;font-size:13px!important}
+#res .gs-snippet{color:var(--ink)!important;font-size:15px!important}
+#res .gsc-cursor-page{background:var(--card)!important;color:var(--ink)!important;border-radius:8px;padding:6px 11px!important;border:0!important;font-size:15px}
+#res .gsc-cursor-current-page{background:var(--red)!important;color:#fff!important}
+#res .gsc-above-wrapper-area,#res .gsc-result-info{color:var(--mute)!important;border:0!important}
+#res .gcsc-find-more-on-google,#res .gcsc-more-maybe-branding-root{display:none!important}
+.links{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.lk{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--line);border-radius:14px;background:var(--bg)}
+.lk .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--card);font:700 13px Inter,sans-serif;color:var(--red)}
+.lk .tx{flex:1;display:flex;flex-direction:column;gap:2px}
+.lk .tt{font-weight:600;overflow-wrap:anywhere}
+.lk .sub{font-size:13px;color:var(--mute);overflow-wrap:anywhere}
+.lk .sub a{color:var(--mute)}
+.lk .warn{font-size:13px;color:var(--link)}
+.open{flex:none;font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:10px;background:var(--red);color:#fff;text-decoration:none;display:inline-flex;align-items:center}
+.more{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.ghost{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+body:not(.src) #res,body:not(.src) .gsc-results-wrapper-overlay,body:not(.src) .gsc-modal-background-image{display:none!important}
+.sbtn{min-height:48px;border-radius:12px;padding:0 22px}
+@media(max-width:600px){.lk{flex-wrap:wrap}.open{width:100%;justify-content:center}.search input{font-size:18px}.sbtn{padding:0 16px}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1><span aria-hidden="true"></span>MEGA Linkfinder</h1>
+  <p class="lead">Tippe einen Begriff ein – die Suche startet automatisch und listet gefundene MEGA-Dateien und -Ordner direkt zum Öffnen auf.</p>
+
+  <form class="search" id="f" role="search">
+    <input id="q" type="search" placeholder="Wonach suchst du?" autocomplete="off" aria-label="Suchbegriff">
+    <div class="spin" aria-hidden="true"></div>
+    <button class="btn sbtn" type="submit">Suchen</button>
+  </form>
+
+  <div class="row" id="types" aria-label="Dateityp"></div>
+  <div class="row" id="scopes" aria-label="Suchbereich"></div>
+
+  <div id="setup" class="setup" hidden>
+    <h2>Einmalig einrichten (ca. 2 Minuten)</h2>
+    <ol>
+      <li>Öffne <a href="https://programmablesearchengine.google.com/controlpanel/create" target="_blank" rel="noopener">programmablesearchengine.google.com</a> und melde dich mit deinem Google-Konto an.</li>
+      <li>Name: z. B. „MEGA Suche“. Bei <b>„Zu durchsuchende Websites“</b> auf „Hinzufügen“ klicken und die komplette Liste unten auf einmal einfügen (eine Website pro Zeile, max. 50).</li>
+      <li>Auf „Erstellen“ klicken und die <b>Suchmaschinen-ID</b> kopieren (sieht aus wie <code>a1b2c3d4e5f6g7h8i</code>).</li>
+      <li>Die ID hier einfügen:</li>
+    </ol>
+    <form id="cxform">
+      <input id="cxin" placeholder="Suchmaschinen-ID" autocomplete="off" aria-label="Suchmaschinen-ID">
+      <button class="btn" type="submit">Speichern</button>
+    </form>
+  </div>
+
+  <details class="setup" id="sites">
+    <summary><b>Durchsuchte Websites</b> – Liste für die Google-Einrichtung</summary>
+    <p style="color:var(--mute);font-size:14px;margin:10px 0">Bei bestehender Suchmaschine: im Control Panel unter „Zu durchsuchende Websites“ auf „Hinzufügen“ klicken und die ganze Liste einfügen – die ID bleibt gleich.</p>
+    <div id="sitelist" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+    <button class="btn" type="button" id="copysites">Liste kopieren</button>
+  </details>
+
+  <p class="status" id="status" aria-live="polite"></p>
+  <div class="links" id="links"></div>
+  <div class="more" id="more" hidden>
+    <button class="ghost" type="button" id="next">Mehr Ergebnisse laden</button>
+    <button class="ghost" type="button" id="srcbtn">Quellseiten anzeigen</button>
+  </div>
+  <div id="res"></div>
+
+  <div class="foot">
+    MEGA hat keinen eigenen öffentlichen Index – angezeigt wird, was Google auf mega.nz und den eingetragenen Websites erfasst hat. Lade nur Inhalte, die du rechtlich nutzen darfst, und sei bei .exe/.apk vorsichtig.
+    <br><button type="button" id="reset">Suchmaschinen-ID ändern</button>
+  </div>
+</main>
+<script>
+{
+/* Optional: ID hier fest eintragen, dann entfällt die Einrichtung im Browser */
+const FIXED_CX = 'b633e126bb056468c';
+
+const TYPES=[
+  {id:'all',l:'Alle',k:''},
+  {id:'video',l:'Video',k:'mp4 OR mkv'},
+  {id:'audio',l:'Audio',k:'mp3 OR flac'},
+  {id:'doc',l:'Dokumente',k:'pdf OR epub'},
+  {id:'arc',l:'Archive',k:'zip OR rar'}
+];
+const SCOPES=[
+  {id:'all',l:'Alle MEGA-Links',k:'"mega.nz"'},
+  {id:'folder',l:'Nur Ordner',k:'"mega.nz/folder"'},
+  {id:'file',l:'Nur Dateien',k:'"mega.nz/file"'},
+  {id:'drload',l:'drload',k:'site:drload.com'}
+];
+/* Websites, die in der Google-Suchmaschine eingetragen werden (max. 50) */
+const SITES=[
+  'mega.nz/*','mega.io/*','drload.com/*',
+  'reddit.com/*','old.reddit.com/*',
+  'x.com/*','twitter.com/*','t.me/*','facebook.com/*','vk.com/*','tumblr.com/*',
+  'pastebin.com/*','rentry.co/*','rentry.org/*','justpaste.it/*','controlc.com/*','paste.ee/*',
+  'github.com/*','gist.github.com/*','gitlab.com/*',
+  'docs.google.com/*','sites.google.com/*','notion.site/*','telegra.ph/*',
+  'blogspot.com/*','wordpress.com/*','medium.com/*','substack.com/*',
+  'youtube.com/*','archive.org/*',
+  'linktr.ee/*','carrd.co/*',
+  'deviantart.com/*','itch.io/*','gumroad.com/*',
+  'quora.com/*','stackexchange.com/*','discourse.org/*',
+  'lemmy.world/*','tildes.net/*'
+];
+const st={type:'all',scope:'all'};
+const $=id=>document.getElementById(id);
+let el=null,timer=null,last='',loadTimer=null,found=new Map(),pages=0;
+const RX=/(?:https?:\/\/)?(?:www\.)?mega(?:\.co)?\.nz\/(?:(file|folder)\/([A-Za-z0-9_-]{8})(?:#([A-Za-z0-9_-]{16,}))?|#(F?)!([A-Za-z0-9_-]{8})(?:!([A-Za-z0-9_-]{16,}))?)/g;
+const DRX=/(?:https?:\/\/)?(?:www\.)?drload\.com\/(file|folder)\/([A-Za-z0-9_-]{4,})/g;
+function collect(results){
+  (results||[]).forEach(r=>{
+    const src=String(r.url||r.unescapedUrl||'');
+    const text=[src,r.titleNoFormatting,r.contentNoFormatting].map(x=>String(x||'')).join(' ');
+    RX.lastIndex=0;let m;
+    while((m=RX.exec(text))){
+      const type=m[1]||(m[4]==='F'?'folder':'file');
+      const id=m[2]||m[5];const key=m[3]||m[6]||'';
+      const full=key&&(type==='folder'?key.length===22:key.length===43);
+      const prev=found.get(id);
+      if(prev&&(prev.full||!full))continue;
+      let title=String(r.titleNoFormatting||'').replace(/\s*[-|:]\s*(Reddit|MEGA)\s*$/i,'').trim();
+      if(!title||/^untitled$|^file folder on mega$/i.test(title))title=type==='folder'?'MEGA-Ordner':'MEGA-Datei';
+      found.set(id,{host:'mega',type,id,key,full,title,src:/^https:\/\//.test(src)&&!/mega\.nz/.test(src)?src:''});
+    }
+    DRX.lastIndex=0;
+    while((m=DRX.exec(text))){
+      const type=m[1],id=m[2],k='dr:'+type+id;
+      if(found.has(k))continue;
+      let title=String(r.titleNoFormatting||'').trim()||(type==='folder'?'drload-Ordner':'drload-Datei');
+      found.set(k,{host:'drload',type,id,key:'',full:true,title,src:/^https:\/\//.test(src)&&!/drload\.com\/(file|folder)\//.test(src)?src:''});
+    }
+  });
+}
+function show(){
+  const box=$('links');box.innerHTML='';
+  const list=[...found.values()].sort((a,b)=>b.full-a.full);
+  list.forEach(f=>{
+    const row=document.createElement('div');row.className='lk';
+    const ic=document.createElement('div');ic.className='ic';ic.textContent=f.type==='folder'?'DIR':'FILE';
+    const tx=document.createElement('div');tx.className='tx';
+    const tt=document.createElement('span');tt.className='tt';tt.textContent=f.title;tx.appendChild(tt);
+    const sub=document.createElement('span');sub.className='sub';
+    const dom=f.host==='drload'?'drload.com':'mega.nz';
+    sub.textContent=(f.type==='folder'?'Ordner':'Datei')+' · '+dom+'/'+f.type+'/'+f.id;
+    if(f.src){sub.append(' · ');const a=document.createElement('a');a.href=f.src;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Quelle';sub.appendChild(a);}
+    tx.appendChild(sub);
+    if(!f.full){const w=document.createElement('span');w.className='warn';w.textContent=f.src?'Schlüssel fehlt oder ist gekürzt – vollständiger Link steht in der Quelle':'Schlüssel nicht bekannt – MEGA fragt beim Öffnen danach';tx.appendChild(w);}
+    const a=document.createElement('a');a.className='open';a.target='_blank';a.rel='noopener noreferrer';
+    a.href='https://'+dom+'/'+f.type+'/'+f.id+(f.key?'#'+f.key:'');a.textContent='Öffnen';
+    row.append(ic,tx,a);box.appendChild(row);
+  });
+  return list.length;
+}
+function fail(){$('status').textContent='Die Google-Suche lädt nicht. Mögliche Gründe: Werbeblocker/Tracking-Schutz aktiv, Seite in der Claude-Vorschau statt auf GitHub Pages geöffnet, oder falsche Suchmaschinen-ID.';}
+
+function chips(box,arr,key){
+  box.innerHTML='';
+  arr.forEach(o=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='chip';b.textContent=o.l;
+    b.setAttribute('aria-pressed',st[key]===o.id);
+    b.onclick=()=>{st[key]=o.id;chips(box,arr,key);last='';run();};
+    box.appendChild(b);
+  });
+}
+
+function buildQuery(term){
+  const parts=[term];
+  const k=TYPES.find(t=>t.id===st.type).k;
+  if(k)parts.push(k);
+  parts.push(SCOPES.find(x=>x.id===st.scope).k);
+  if(st.scope!=='drload')parts.push('-site:mega.io');
+  return parts.join(' ');
+}
+
+function run(){
+  const term=$('q').value.trim();
+  if(!el){
+    if(term.length>=2)$('status').textContent=getCx()?'Google-Suche lädt noch … dein Begriff wird gleich gesucht.':'Bitte zuerst unten die Suchmaschinen-ID speichern.';
+    return;
+  }
+  if(term.length<2){$('status').textContent='';el.clearAllResults();last='';return;}
+  const query=buildQuery(term);
+  if(query===last)return;
+  last=query;found=new Map();pages=0;$('links').innerHTML='';$('more').hidden=true;
+  document.body.classList.add('busy');
+  $('status').textContent='Suche nach „'+term+'“ …';
+  el.execute(query);
+  try{const u=new URL(location.href);u.searchParams.set('q',term);history.replaceState(null,'',u);}catch(e){}
+}
+
+function getCx(){
+  if(FIXED_CX)return FIXED_CX;
+  try{return localStorage.getItem('megaCx')||'';}catch(e){return '';}
+}
+
+function start(cx){
+  window.__gcse={
+    parsetags:'explicit',
+    searchCallbacks:{web:{
+      ready:(name,q,promos,results)=>{pages++;collect(results);},
+      rendered:()=>{
+        document.body.classList.remove('busy');
+        const n=show();
+        const next=document.querySelector('.gsc-cursor-current-page+.gsc-cursor-page');
+        $('more').hidden=false;$('next').hidden=!next;
+        $('status').textContent=n?n+' Link'+(n>1?'s':'')+' gefunden (aus '+pages+' Ergebnisseite'+(pages>1?'n':'')+')':'Auf dieser Seite keine MEGA-Links gefunden'+(next?' – lade mehr Ergebnisse oder':' –')+' probiere einen anderen oder englischen Begriff.';
+      }
+    }},
+    callback:()=>{
+      google.search.cse.element.render({div:'res',tag:'searchresults-only',gname:'mega',attributes:{linkTarget:'_blank',enableHistory:false}});
+      el=google.search.cse.element.getElement('mega');
+      clearTimeout(loadTimer);
+      const pre=new URLSearchParams(location.search).get('q');
+      if(pre&&!$('q').value)$('q').value=pre;
+      $('status').textContent='';last='';run();
+    }
+  };
+  const s=document.createElement('script');
+  s.async=true;
+  s.src='https://cse.google.com/cse.js?cx='+encodeURIComponent(cx);
+  s.onerror=fail;
+  loadTimer=setTimeout(()=>{if(!el)fail();},10000);
+  document.head.appendChild(s);
+}
+
+$('next').addEventListener('click',()=>{
+  const nx=document.querySelector('.gsc-cursor-current-page+.gsc-cursor-page');
+  if(nx){document.body.classList.add('busy');nx.click();}
+});
+$('srcbtn').addEventListener('click',()=>{
+  const on=document.body.classList.toggle('src');
+  $('srcbtn').textContent=on?'Quellseiten ausblenden':'Quellseiten anzeigen';
+});
+$('q').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(run,500);});
+$('f').addEventListener('submit',e=>{e.preventDefault();clearTimeout(timer);last='';run();});
+$('cxform').addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=$('cxin').value.trim();
+  if(!/^[\w:-]{8,}$/.test(v)){$('cxin').focus();return;}
+  try{localStorage.setItem('megaCx',v);}catch(x){}
+  location.reload();
+});
+$('reset').addEventListener('click',()=>{
+  try{localStorage.removeItem('megaCx');}catch(e){}
+  location.reload();
+});
+
+chips($('types'),TYPES,'type');
+chips($('scopes'),SCOPES,'scope');
+
+SITES.forEach(s=>{const c=document.createElement('code');c.textContent=s;c.style.cssText='background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 7px;font-size:13px';$('sitelist').appendChild(c);});
+$('copysites').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(SITES.join('\n'));$('copysites').textContent='Kopiert ✓';}
+  catch(e){$('copysites').textContent='Kopieren nicht möglich';}
+  setTimeout(()=>{$('copysites').textContent='Liste kopieren';},1800);
+});
+
+const cx=getCx();
+if(cx)start(cx);
+else{$('setup').hidden=false;$('status').textContent='Noch keine Suchmaschinen-ID gespeichert – siehe Einrichtung unten.';}
+$('q').focus();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+# Startpunkte für den MegaSearch-Crawler
+# Eine Adresse pro Zeile. Zeilen mit # werden ignoriert.
+# Der Crawler folgt von hier aus Links auf derselben Website
+# und beachtet die robots.txt jeder Seite.
+#
+# Tipp: Konkrete Seiten (ein Forum-Bereich, ein Blog, ein öffentlicher
+# Telegram-Kanal als https://t.me/s/KANALNAME, ein Pastebin-Profil)
+# liefern viel mehr Treffer als nur die Startseite einer Website.
+
+drload.com
+mega.io
+reddit.com
+old.reddit.com
+x.com
+twitter.com
+t.me
+facebook.com
+vk.com
+tumblr.com
+https://pastebin.com/archive
+rentry.co
+rentry.org
+justpaste.it
+controlc.com
+paste.ee
+github.com
+gist.github.com
+gitlab.com
+docs.google.com
+sites.google.com
+notion.site
+telegra.ph
+blogspot.com
+wordpress.com
+medium.com
+substack.com
+youtube.com
+archive.org
+linktr.ee
+carrd.co
+deviantart.com
+itch.io
+gumroad.com
+quora.com
+stackexchange.com
+discourse.org
+lemmy.world
+tildes.net

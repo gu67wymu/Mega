@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MegaSearch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: fast personal search tool
+   IDEA: a card index drawer of links, instantly filtered as you type
+   PICTURE: the live result list itself under a big search field
+   COLOUR and TYPE: white / ink, signal red #e5322d for open buttons, green online dot; Space Grotesk + Inter
+   LAYOUT: one column 860px: title + index status, search, chips, results, footer stats */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#101217);--ink:light-dark(#14161c,#eceef3);--mute:light-dark(#5d6270,#9aa0ad);--line:light-dark(#e3e5ea,#262a33);--card:light-dark(#f5f6f8,#181b22);--red:#e5322d;--link:light-dark(#c4221d,#ff7a74);--ok:light-dark(#1f8a3b,#5fd07a)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:clamp(24px,4vw,56px) max(5vw,16px) 48px}
+h1{font:700 clamp(30px,5vw,46px)/1.05 "Space Grotesk",Inter,sans-serif;margin:0 0 6px}
+h1 span{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--red);margin-right:.25em;vertical-align:.04em}
+.meta{color:var(--mute);font-size:14px;margin:0 0 20px}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:6px 6px 6px 14px}
+.search:focus-within{border-color:var(--red)}
+.search input{flex:1;font:500 20px/1.3 Inter,sans-serif;border:0;background:none;color:var(--ink);padding:10px 0;outline:none}
+.btn{font:600 16px Inter,sans-serif;border:0;border-radius:12px;padding:0 20px;min-height:48px;background:var(--red);color:#fff;cursor:pointer}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font:500 15px Inter,sans-serif;min-height:42px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--link);outline-offset:2px}
+select{font:500 15px Inter,sans-serif;min-height:42px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.status{margin:20px 0 6px;color:var(--mute);font-size:14px;min-height:20px}
+.list{display:flex;flex-direction:column;gap:10px}
+.lk{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--line);border-radius:14px}
+.ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--card);font:700 12px Inter,sans-serif;color:var(--red);position:relative}
+.dot{position:absolute;right:-3px;top:-3px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg);background:var(--mute)}
+.dot.on{background:var(--ok)}.dot.off{background:var(--red)}
+.tx{flex:1;display:flex;flex-direction:column;gap:2px}
+.tt{font-weight:600;overflow-wrap:anywhere}
+.sub{font-size:13px;color:var(--mute);overflow-wrap:anywhere}
+.sub a{color:var(--mute)}
+.ctx{font-size:14px;overflow-wrap:anywhere}
+.warn{font-size:13px;color:var(--link)}
+.open{flex:none;font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:10px;background:var(--red);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.ghost{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;margin-top:14px}
+.empty{padding:28px 18px;border:1.5px dashed var(--line);border-radius:14px;color:var(--mute);text-align:center}
+.foot{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;color:var(--mute);font-size:13px}
+.foot a{color:var(--link)}
+details summary{cursor:pointer;min-height:32px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+td,th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.search input{font-size:18px}.btn{padding:0 14px}.lk{flex-wrap:wrap}.open{width:100%}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1><span aria-hidden="true"></span>MegaSearch</h1>
+  <p class="meta" id="meta">Index wird geladen …</p>
+
+  <form class="search" id="f" role="search">
+    <input id="q" type="search" placeholder="Wonach suchst du?" autocomplete="off" aria-label="Suchbegriff">
+    <button class="btn" type="submit">Suchen</button>
+  </form>
+
+  <div class="row" id="kinds" aria-label="Linkart"></div>
+  <div class="row">
+    <button type="button" class="chip" id="onlyKey" aria-pressed="false">Nur mit Schlüssel</button>
+    <button type="button" class="chip" id="onlyOn" aria-pressed="false">Nur online</button>
+    <select id="sort" aria-label="Sortierung">
+      <option value="new">Neueste zuerst</option>
+      <option value="size">Größte zuerst</option>
+      <option value="name">Name A–Z</option>
+    </select>
+  </div>
+
+  <p class="status" id="status" aria-live="polite"></p>
+  <div class="list" id="list"></div>
+  <button type="button" class="ghost" id="more" hidden>Mehr anzeigen</button>
+
+  <div class="foot">
+    <p>Der Crawler läuft automatisch alle 6 Stunden auf GitHub, beachtet die robots.txt jeder Website und sammelt öffentlich gepostete MEGA- und drload-Links. Lade nur Inhalte, die du rechtlich nutzen darfst.</p>
+    <p><a href="linkfinder.html">Live-Suche über Google</a> · <a href="https://github.com/gu67wymu/Mega/actions" target="_blank" rel="noopener">Crawler-Läufe</a></p>
+    <details><summary>Statistik des letzten Laufs</summary><div id="stats">Noch kein Lauf.</div></details>
+  </div>
+</main>
+<script>
+{
+const SOURCES=['https://raw.githubusercontent.com/gu67wymu/Mega/main/data/','data/'];
+const KINDS=[{id:'all',l:'Alle'},{id:'folder',l:'Ordner'},{id:'file',l:'Dateien'},{id:'drload',l:'drload'}];
+const st={kind:'all',key:false,on:false,sort:'new',shown:50};
+const $=id=>document.getElementById(id);
+let items=[],hits=[];
+
+async function load(file){
+  for(const base of SOURCES){
+    try{const r=await fetch(base+file+'?t='+Date.now(),{cache:'no-store'});if(r.ok)return await r.json();}catch(e){}
+  }
+  return null;
+}
+const fmtSize=b=>{if(!b)return '';const u=['B','KB','MB','GB','TB'];let i=0;while(b>=1024&&i<4){b/=1024;i++;}return (i?b.toFixed(1):b)+' '+u[i];};
+const fmtDate=s=>{try{return new Date(s).toLocaleString('de-DE',{dateStyle:'medium',timeStyle:'short'});}catch(e){return s;}};
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+function chips(){
+  const box=$('kinds');box.innerHTML='';
+  KINDS.forEach(k=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=k.l;
+    b.setAttribute('aria-pressed',st.kind===k.id);b.onclick=()=>{st.kind=k.id;chips();run();};box.appendChild(b);});
+}
+function toggle(id,prop){$(id).onclick=()=>{st[prop]=!st[prop];$(id).setAttribute('aria-pressed',st[prop]);run();};}
+
+function run(){
+  const terms=norm($('q').value).split(/\s+/).filter(Boolean);
+  hits=items.filter(e=>{
+    if(st.kind==='drload'&&e.h!=='drload')return false;
+    if((st.kind==='folder'||st.kind==='file')&&(e.h!=='mega'||e.t!==st.kind))return false;
+    if(st.key&&e.h==='mega'&&!e.key)return false;
+    if(st.on&&e.status!=='online')return false;
+    if(!terms.length)return true;
+    return terms.every(t=>e._s.includes(t));
+  });
+  if(st.sort==='size')hits.sort((a,b)=>(b.size||0)-(a.size||0));
+  else if(st.sort==='name')hits.sort((a,b)=>a._name.localeCompare(b._name,'de'));
+  else hits.sort((a,b)=>String(b.found).localeCompare(String(a.found)));
+  st.shown=50;render();
+  try{const u=new URL(location.href);terms.length?u.searchParams.set('q',$('q').value.trim()):u.searchParams.delete('q');history.replaceState(null,'',u);}catch(e){}
+}
+
+function row(e){
+  const dom=e.h==='drload'?'drload.com':'mega.nz';
+  const el=document.createElement('div');el.className='lk';
+  const ic=document.createElement('div');ic.className='ic';ic.textContent=e.t==='folder'?'DIR':'FILE';
+  const d=document.createElement('span');d.className='dot'+(e.status==='online'?' on':e.status==='offline'?' off':'');
+  d.title=e.status==='online'?'Online':e.status==='offline'?'Offline / gelöscht':'Nicht geprüft';ic.appendChild(d);
+  const tx=document.createElement('div');tx.className='tx';
+  const tt=document.createElement('span');tt.className='tt';tt.textContent=e._name;tx.appendChild(tt);
+  if(e.ctx&&e.ctx!==e._name){const c=document.createElement('span');c.className='ctx';c.textContent=e.ctx;tx.appendChild(c);}
+  const sub=document.createElement('span');sub.className='sub';
+  const bits=[e.t==='folder'?'Ordner':'Datei'];
+  if(e.files)bits.push(e.files+' Dateien');
+  if(e.size)bits.push(fmtSize(e.size));
+  bits.push(dom);bits.push('gefunden '+fmtDate(e.found));
+  sub.textContent=bits.join(' · ');
+  const src=(e.src||[]).find(s=>/^https?:\/\//.test(s));
+  if(src){sub.append(' · ');const a=document.createElement('a');a.href=src;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Quelle';sub.appendChild(a);}
+  tx.appendChild(sub);
+  if(e.h==='mega'&&!e.key){const w=document.createElement('span');w.className='warn';w.textContent='Ohne Schlüssel – MEGA fragt beim Öffnen danach (steht evtl. in der Quelle).';tx.appendChild(w);}
+  const a=document.createElement('a');a.className='open';a.target='_blank';a.rel='noopener noreferrer';
+  a.href='https://'+dom+'/'+e.t+'/'+encodeURIComponent(e.id)+(e.key?'#'+e.key:'');a.textContent='Öffnen';
+  el.append(ic,tx,a);return el;
+}
+
+function render(){
+  const box=$('list');box.innerHTML='';
+  if(!items.length){box.innerHTML='<div class="empty">Der Index ist noch leer. Starte den Crawler einmal unter GitHub → Actions → „MegaSearch Crawler“ → „Run workflow“.</div>';$('status').textContent='';$('more').hidden=true;return;}
+  if(!hits.length){box.innerHTML='<div class="empty">Keine Treffer. Probiere einen anderen Begriff, einen Filter weniger oder die <a href="linkfinder.html">Live-Suche über Google</a>.</div>';$('status').textContent='0 Treffer';$('more').hidden=true;return;}
+  hits.slice(0,st.shown).forEach(e=>box.appendChild(row(e)));
+  $('status').textContent=hits.length.toLocaleString('de-DE')+' Treffer';
+  $('more').hidden=hits.length<=st.shown;
+}
+
+function showStats(s){
+  if(!s||!s.sites)return;
+  const box=$('stats');box.textContent='';
+  const p=document.createElement('p');p.textContent='Lauf am '+fmtDate(s.run)+': '+(s.added||0)+' neue Links, '+(s.checked||0)+' bei MEGA geprüft, Dauer '+Math.round((s.seconds||0)/60)+' min.';
+  box.appendChild(p);
+  const t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Website</th><th class="n">Seiten</th><th class="n">Links</th><th class="n">Gesperrt</th></tr></thead>';
+  const tb=document.createElement('tbody');
+  s.sites.forEach(x=>{const tr=document.createElement('tr');
+    [String(x.seed).replace(/^https?:\/\//,''),x.pages,x.links,x.blocked].forEach((v,i)=>{const td=document.createElement('td');if(i)td.className='n';td.textContent=v;tr.appendChild(td);});
+    tb.appendChild(tr);});
+  t.appendChild(tb);box.appendChild(t);
+}
+
+$('f').addEventListener('submit',e=>{e.preventDefault();run();$('q').blur();});
+$('q').addEventListener('input',()=>{clearTimeout(window._t);window._t=setTimeout(run,150);});
+$('sort').addEventListener('change',()=>{st.sort=$('sort').value;run();});
+$('more').addEventListener('click',()=>{st.shown+=50;render();});
+toggle('onlyKey','key');toggle('onlyOn','on');chips();
+
+(async()=>{
+  const pre=new URLSearchParams(location.search).get('q');if(pre)$('q').value=pre;
+  const data=await load('index.json');
+  if(data&&Array.isArray(data.items)){
+    items=data.items.map(e=>{
+      const name=e.name||e.srcTitle||(e.t==='folder'?'Ordner':'Datei')+' '+e.id;
+      return Object.assign({},e,{_name:String(name),_s:norm([e.name,e.srcTitle,e.ctx,e.id,(e.src||[]).join(' ')].join(' '))});
+    });
+    $('meta').textContent=items.length.toLocaleString('de-DE')+' Links im Index · aktualisiert '+fmtDate(data.updated);
+  }else{
+    $('meta').textContent='Noch kein Index vorhanden.';
+  }
+  run();
+  showStats(await load('stats.json'));
+})();
+}
+</script>
+</body>
+</html>
