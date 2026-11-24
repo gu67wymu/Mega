@@ -1,0 +1,321 @@
+{
+ "run": "2026-11-24T06:47:48+00:00",
+ "sites": [
+  {
+   "seed": "https://drload.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://mega.io/",
+   "pages": 60,
+   "links": 1,
+   "new": 1,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://reddit.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://old.reddit.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://x.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://twitter.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://t.me/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://facebook.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://vk.com/",
+   "pages": 2,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://tumblr.com/",
+   "pages": 56,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 1
+  },
+  {
+   "seed": "https://pastebin.com/archive",
+   "pages": 57,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 4
+  },
+  {
+   "seed": "https://rentry.co/",
+   "pages": 56,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 2
+  },
+  {
+   "seed": "https://rentry.org/",
+   "pages": 60,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://justpaste.it/",
+   "pages": 11,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://controlc.com/",
+   "pages": 9,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://paste.ee/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://github.com/",
+   "pages": 56,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 2
+  },
+  {
+   "seed": "https://gist.github.com/",
+   "pages": 37,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 4
+  },
+  {
+   "seed": "https://gitlab.com/",
+   "pages": 59,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://docs.google.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://sites.google.com/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://notion.site/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://telegra.ph/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://blogspot.com/",
+   "pages": 1,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://wordpress.com/",
+   "pages": 53,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 1
+  },
+  {
+   "seed": "https://medium.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 1
+  },
+  {
+   "seed": "https://substack.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://youtube.com/",
+   "pages": 58,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://archive.org/",
+   "pages": 3,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 1
+  },
+  {
+   "seed": "https://linktr.ee/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://carrd.co/",
+   "pages": 7,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 0
+  },
+  {
+   "seed": "https://deviantart.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 1
+  },
+  {
+   "seed": "https://itch.io/",
+   "pages": 53,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 4
+  },
+  {
+   "seed": "https://gumroad.com/",
+   "pages": 57,
+   "links": 0,
+   "new": 0,
+   "blocked": 2,
+   "errors": 1
+  },
+  {
+   "seed": "https://quora.com/",
+   "pages": 0,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://stackexchange.com/",
+   "pages": 27,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 32
+  },
+  {
+   "seed": "https://discourse.org/",
+   "pages": 61,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 0
+  },
+  {
+   "seed": "https://lemmy.world/",
+   "pages": 58,
+   "links": 0,
+   "new": 0,
+   "blocked": 3,
+   "errors": 0
+  },
+  {
+   "seed": "https://tildes.net/",
+   "pages": 57,
+   "links": 0,
+   "new": 0,
+   "blocked": 1,
+   "errors": 1
+  }
+ ],
+ "checked": 1,
+ "total": 1,
+ "added": 1,
+ "seconds": 1016
+}
