@@ -1,5 +1,5 @@
 {
- "run": "2026-11-25T08:33:22+00:00",
+ "run": "2026-11-25T21:42:04+00:00",
  "sites": [
   {
    "seed": "https://drload.com/",
@@ -83,11 +83,11 @@
   },
   {
    "seed": "https://pastebin.com/archive",
-   "pages": 52,
+   "pages": 57,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 9
+   "errors": 4
   },
   {
    "seed": "https://rentry.co/",
@@ -131,11 +131,11 @@
   },
   {
    "seed": "https://github.com/",
-   "pages": 56,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 2
+   "errors": 3
   },
   {
    "seed": "https://gist.github.com/",
@@ -219,7 +219,7 @@
   },
   {
    "seed": "https://youtube.com/",
-   "pages": 58,
+   "pages": 57,
    "links": 0,
    "new": 0,
    "blocked": 1,
@@ -267,7 +267,7 @@
   },
   {
    "seed": "https://gumroad.com/",
-   "pages": 58,
+   "pages": 49,
    "links": 0,
    "new": 0,
    "blocked": 2,
@@ -291,15 +291,15 @@
   },
   {
    "seed": "https://discourse.org/",
-   "pages": 61,
+   "pages": 60,
    "links": 0,
    "new": 0,
    "blocked": 1,
-   "errors": 0
+   "errors": 1
   },
   {
    "seed": "https://lemmy.world/",
-   "pages": 59,
+   "pages": 58,
    "links": 0,
    "new": 0,
    "blocked": 3,
@@ -317,5 +317,5 @@
  "checked": 0,
  "total": 1,
  "added": 0,
- "seconds": 1008
+ "seconds": 1013
 }
