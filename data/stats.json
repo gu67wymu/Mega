@@ -1,5 +1,5 @@
 {
- "run": "2026-11-24T22:26:29+00:00",
+ "run": "2026-11-25T08:33:22+00:00",
  "sites": [
   {
    "seed": "https://drload.com/",
@@ -11,7 +11,7 @@
   },
   {
    "seed": "https://mega.io/",
-   "pages": 61,
+   "pages": 60,
    "links": 1,
    "new": 0,
    "blocked": 0,
@@ -131,7 +131,7 @@
   },
   {
    "seed": "https://github.com/",
-   "pages": 57,
+   "pages": 56,
    "links": 0,
    "new": 0,
    "blocked": 0,
@@ -139,7 +139,7 @@
   },
   {
    "seed": "https://gist.github.com/",
-   "pages": 55,
+   "pages": 35,
    "links": 0,
    "new": 0,
    "blocked": 0,
@@ -211,11 +211,11 @@
   },
   {
    "seed": "https://substack.com/",
-   "pages": 42,
+   "pages": 0,
    "links": 0,
    "new": 0,
-   "blocked": 0,
-   "errors": 17
+   "blocked": 1,
+   "errors": 0
   },
   {
    "seed": "https://youtube.com/",
@@ -251,14 +251,6 @@
   },
   {
    "seed": "https://deviantart.com/",
-   "pages": 58,
-   "links": 0,
-   "new": 0,
-   "blocked": 1,
-   "errors": 0
-  },
-  {
-   "seed": "https://itch.io/",
    "pages": 0,
    "links": 0,
    "new": 0,
@@ -266,8 +258,16 @@
    "errors": 1
   },
   {
+   "seed": "https://itch.io/",
+   "pages": 53,
+   "links": 0,
+   "new": 0,
+   "blocked": 0,
+   "errors": 4
+  },
+  {
    "seed": "https://gumroad.com/",
-   "pages": 57,
+   "pages": 58,
    "links": 0,
    "new": 0,
    "blocked": 2,
@@ -283,11 +283,11 @@
   },
   {
    "seed": "https://stackexchange.com/",
-   "pages": 29,
+   "pages": 30,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 30
+   "errors": 29
   },
   {
    "seed": "https://discourse.org/",
@@ -299,11 +299,11 @@
   },
   {
    "seed": "https://lemmy.world/",
-   "pages": 54,
+   "pages": 59,
    "links": 0,
    "new": 0,
    "blocked": 3,
-   "errors": 1
+   "errors": 0
   },
   {
    "seed": "https://tildes.net/",
@@ -317,5 +317,5 @@
  "checked": 0,
  "total": 1,
  "added": 0,
- "seconds": 1060
+ "seconds": 1008
 }
