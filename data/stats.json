@@ -1,5 +1,5 @@
 {
- "run": "2026-11-26T08:17:01+00:00",
+ "run": "2026-11-26T21:31:32+00:00",
  "sites": [
   {
    "seed": "https://drload.com/",
@@ -11,7 +11,7 @@
   },
   {
    "seed": "https://mega.io/",
-   "pages": 60,
+   "pages": 61,
    "links": 1,
    "new": 0,
    "blocked": 0,
@@ -75,7 +75,7 @@
   },
   {
    "seed": "https://tumblr.com/",
-   "pages": 55,
+   "pages": 56,
    "links": 0,
    "new": 0,
    "blocked": 1,
@@ -83,11 +83,11 @@
   },
   {
    "seed": "https://pastebin.com/archive",
-   "pages": 47,
+   "pages": 58,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 9
+   "errors": 3
   },
   {
    "seed": "https://rentry.co/",
@@ -131,19 +131,19 @@
   },
   {
    "seed": "https://github.com/",
-   "pages": 57,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 2
+   "errors": 3
   },
   {
    "seed": "https://gist.github.com/",
-   "pages": 28,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 4
+   "errors": 3
   },
   {
    "seed": "https://gitlab.com/",
@@ -267,7 +267,7 @@
   },
   {
    "seed": "https://gumroad.com/",
-   "pages": 56,
+   "pages": 58,
    "links": 0,
    "new": 0,
    "blocked": 2,
@@ -283,11 +283,11 @@
   },
   {
    "seed": "https://stackexchange.com/",
-   "pages": 27,
+   "pages": 20,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 32
+   "errors": 39
   },
   {
    "seed": "https://discourse.org/",
@@ -317,5 +317,5 @@
  "checked": 0,
  "total": 1,
  "added": 0,
- "seconds": 1006
+ "seconds": 1002
 }
