@@ -1,5 +1,5 @@
 {
- "run": "2026-11-27T08:32:08+00:00",
+ "run": "2026-11-27T21:16:29+00:00",
  "sites": [
   {
    "seed": "https://drload.com/",
@@ -11,7 +11,7 @@
   },
   {
    "seed": "https://mega.io/",
-   "pages": 54,
+   "pages": 59,
    "links": 1,
    "new": 0,
    "blocked": 0,
@@ -75,19 +75,19 @@
   },
   {
    "seed": "https://tumblr.com/",
-   "pages": 54,
+   "pages": 55,
    "links": 0,
    "new": 0,
-   "blocked": 0,
-   "errors": 3
+   "blocked": 1,
+   "errors": 1
   },
   {
    "seed": "https://pastebin.com/archive",
-   "pages": 58,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 3
+   "errors": 6
   },
   {
    "seed": "https://rentry.co/",
@@ -131,19 +131,19 @@
   },
   {
    "seed": "https://github.com/",
-   "pages": 14,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 0
+   "errors": 3
   },
   {
    "seed": "https://gist.github.com/",
-   "pages": 29,
+   "pages": 44,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 4
+   "errors": 3
   },
   {
    "seed": "https://gitlab.com/",
@@ -195,7 +195,7 @@
   },
   {
    "seed": "https://wordpress.com/",
-   "pages": 54,
+   "pages": 55,
    "links": 0,
    "new": 0,
    "blocked": 0,
@@ -219,7 +219,7 @@
   },
   {
    "seed": "https://youtube.com/",
-   "pages": 58,
+   "pages": 57,
    "links": 0,
    "new": 0,
    "blocked": 1,
@@ -259,7 +259,7 @@
   },
   {
    "seed": "https://itch.io/",
-   "pages": 53,
+   "pages": 54,
    "links": 0,
    "new": 0,
    "blocked": 0,
@@ -267,7 +267,7 @@
   },
   {
    "seed": "https://gumroad.com/",
-   "pages": 56,
+   "pages": 54,
    "links": 0,
    "new": 0,
    "blocked": 2,
@@ -283,11 +283,11 @@
   },
   {
    "seed": "https://stackexchange.com/",
-   "pages": 17,
+   "pages": 27,
    "links": 0,
    "new": 0,
    "blocked": 0,
-   "errors": 42
+   "errors": 32
   },
   {
    "seed": "https://discourse.org/",
@@ -299,7 +299,7 @@
   },
   {
    "seed": "https://lemmy.world/",
-   "pages": 58,
+   "pages": 53,
    "links": 0,
    "new": 0,
    "blocked": 3,
@@ -314,8 +314,8 @@
    "errors": 0
   }
  ],
- "checked": 1,
+ "checked": 0,
  "total": 1,
  "added": 0,
- "seconds": 1018
+ "seconds": 1005
 }
